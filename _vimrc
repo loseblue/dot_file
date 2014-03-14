@@ -3,8 +3,8 @@
 "         Desc: 
 "       Author: loseblue
 "        Email: loseblue[a]163.com
-"      Version: 1.2.0
-"   LastChange: 2014-02-04 18:51:00
+"      Version: 1.3.0
+"   LastChange: 2014-03-14 14:43:45
 "      History:
 "=============================================================================
 " Platform
@@ -40,7 +40,10 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " vim-scripts repos
+"----file support---
 Bundle 'a.vim'
+Bundle 'plasticboy/vim-markdown'
+
 Bundle 'loseblue/AuthorInfo'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'terryma/vim-multiple-cursors'
@@ -48,34 +51,36 @@ Bundle 'loseblue/vim-smooth-scroll'
 Bundle 'ihacklog/Mark'
 Bundle 'Yggdroot/indentLine'
 Bundle 'matchit.zip'
-Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neocomplete'
 Bundle 'Shougo/neosnippet'
-Bundle 'drmikehenry/vim-fontsize'
-
-" ======easytags=====
+Bundle 'honza/vim-snippets'
+Bundle 'ifdef-highlighting'
+" ----easytags----
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-shell'
 " Bundle 'xolox/vim-easytags'
-" ======easytags=====
 Bundle 'gtags.vim'
 Bundle 'loseblue/gtags-cscope.vim'
+Bundle 'showliu/vbookmark.vim'
 Bundle 'The-NERD-Commenter'
 Bundle 'The-NERD-tree'
 Bundle 'majutsushi/tagbar'
 Bundle 'genutils'
 Bundle 'loseblue/TabBar'
 Bundle 'kien/ctrlp.vim'
+Bundle 'Yggdroot/LeaderF'
 Bundle 'godlygeek/tabular'
 Bundle 'DrawIt'
 Bundle 'tpope/vim-fugitive'
 Bundle 'TeTrIs.vim'
 Bundle 'osyo-manga/vim-over'
-Bundle 'plasticboy/vim-markdown'
 Bundle 'EasyGrep'
 Bundle 'dyng/ctrlsf.vim'
+
 "==========colorscheme============
 Bundle 'bling/vim-airline'
 Bundle 'chriskempson/tomorrow-theme'
+Bundle 'drmikehenry/vim-fontsize'
 "==========colorscheme============
 
 filetype plugin indent on    " required!
@@ -180,10 +185,10 @@ nnoremap <C-l> <C-w>l
 
 " "ctrl+c ctrl+v ctrl+x
 set clipboard+=unnamed
-vmap <C-c> "+y
+map <C-c> "+y
+smap <C-c> "+y
 imap <C-v> <ESC>"+p
-nmap <C-v> "+p
-vmap <C-v> "+p
+map <C-v> "+p
 
 " file code type
 set ffs=dos,unix
@@ -238,7 +243,7 @@ imap <F7> <C-R>=strftime("%c")<CR>
 nmap <silent> <F9> :TagbarToggle<CR>
 let g:tagbar_left = 1
 let g:tagbar_singleclick = 0
-if has("gui_macvim")
+if (g:isMac)
     let g:tagbar_ctags_bin = '/usr/local/Cellar/ctags/5.8/bin/ctags'
 else
     let g:tagbar_ctags_bin = 'ctags'
@@ -314,11 +319,13 @@ let g:ctrlp_custom_ignore = {
 
 let g:ctrlp_reuse_window = 'netrw\|help\|quickfix\|tagbar\|taglist'
 let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'acr'
 let g:ctrlp_max_height=9
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_follow_symlinks=1
 let g:ctrlp_lazy_update = 1
+let g:ctrlp_switch_buffer = 'Et'
+let g:ctrlp_show_hidden = 1
 " }
 
 
@@ -345,8 +352,7 @@ let g:vim_markdown_folding_disabled=1
 let g:vim_markdown_initial_foldlevel=1
 " }
 
-" Neocomplcache {
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" neocomplete {
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
@@ -362,7 +368,7 @@ let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'vimshell' : $HOME.'/.vimshell_hist',
     \ 'scheme' : $HOME.'/.gosh_completions'
-    \ }
+        \ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -371,30 +377,45 @@ endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neocomplcache_snippets_expand)
-smap <C-k>     <Plug>(neocomplcache_snippets_expand)
-inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return neocomplcache#mappings#smart_close_popup() . "\<CR>"
+  return neocomplete#close_popup() . "\<CR>"
   " For no inserting <CR> key.
-  "return pumvisible() ? neocomplcache#mappings#smart_close_popup() : "\<CR>"
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
 " Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 
+" For cursor moving in insert mode(Not recommended)
+"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
+"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
+"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
+"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
+" Or set this.
+"let g:neocomplete#enable_cursor_hold_i = 1
+" Or set this.
+"let g:neocomplete#enable_insert_char_pre = 1
+
 " AutoComplPop like behavior.
 "let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -410,6 +431,9 @@ endif
 "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 "}
 
@@ -431,6 +455,12 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+
+" Enable snipMate compatibility feature.
+let g:neosnippet#enable_snipmate_compatibility = 1
+
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 " }
 
 " settings of cscope.
