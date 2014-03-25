@@ -153,7 +153,7 @@ endif
 set laststatus=2 
 set t_Co=256 
 " let g:Powerline_symbols='fancy' 
-let g:airline_theme="solarized"
+let g:airline_theme="tomorrow"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#syntastic#enabled = 0
 
@@ -164,7 +164,6 @@ let g:airline_right_alt_sep = '⮃'
 let g:airline_branch_prefix = '⭠'
 let g:airline_readonly_symbol = '⭤'
 let g:airline_linecolumn_prefix = '⭡'
-
 
 " C setting
 set sm        " bracket mactch
@@ -209,7 +208,7 @@ let g:EasyMotion_do_shade = 0
 " ctrlsf.vim
 let g:ctrlsf_ackprg = 'ag'
 " let g:ctrlsf_auto_close = 0
-" let g:ctrlsf_context = '-B 5 -A 3'
+let g:ctrlsf_context = '-t -B 5 -A 3'
 " }
 
 " """"""""""""""""""" F1-F12"""""""""""""""""""""""""
