@@ -3,8 +3,8 @@
 "         Desc: 
 "       Author: loseblue
 "        Email: loseblue[a]163.com
-"      Version: 1.3.0
-"   LastChange: 2014-03-14 14:43:45
+"      Version: 2.0.0
+"   LastChange: 2018-05-16 18:18:37
 "      History:
 "=============================================================================
 " Platform
@@ -30,117 +30,130 @@ endif
 "}}}
 
 "=========================== Vundle start ================================
-set nocompatible    " be iMproved
-filetype off        " required!
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-set rtp+=~/.vim/bundle/vundle/
+" set the runtime path to include Vundle and initialize
+call plug#begin('~/.vim/plugged')
 
-call vundle#rc()
-" required!
-Bundle 'gmarik/vundle'
+" Enhanced
+Plug 'haya14busa/incsearch.vim'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'ihacklog/Mark'
+Plug 'loseblue/AuthorInfo', {'on': 'AuthorInfoDetect'}
+Plug 'yonchu/accelerated-smooth-scroll'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'vim-scripts/matchit.zip'
 
-" vim-scripts repos
-"----file support---
-Bundle 'a.vim'
-Bundle 'plasticboy/vim-markdown'
+" file
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'hjwp/vim-asciidoc', { 'for': 'asciidoc' }
+Plug 'vim-scripts/autohotkey-ahk', { 'for': 'ahk' }
+Plug 'aklt/plantuml-syntax', { 'for': 'plantuml' }
 
-Bundle 'loseblue/AuthorInfo'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'loseblue/vim-smooth-scroll'
-Bundle 'ihacklog/Mark'
-Bundle 'Yggdroot/indentLine'
-Bundle 'matchit.zip'
-Bundle 'Shougo/neocomplete'
-Bundle 'Shougo/neosnippet'
-Bundle 'honza/vim-snippets'
-Bundle 'ifdef-highlighting'
-" ----easytags----
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-shell'
-" Bundle 'xolox/vim-easytags'
-Bundle 'gtags.vim'
-Bundle 'loseblue/gtags-cscope.vim'
-Bundle 'showliu/vbookmark.vim'
-Bundle 'The-NERD-Commenter'
-Bundle 'The-NERD-tree'
-Bundle 'majutsushi/tagbar'
-Bundle 'genutils'
-Bundle 'loseblue/TabBar'
-Bundle 'kien/ctrlp.vim'
-Bundle 'Yggdroot/LeaderF'
-Bundle 'godlygeek/tabular'
-Bundle 'DrawIt'
-Bundle 'tpope/vim-fugitive'
-Bundle 'TeTrIs.vim'
-Bundle 'osyo-manga/vim-over'
-Bundle 'EasyGrep'
-Bundle 'dyng/ctrlsf.vim'
+" c
+Plug 'tpope/vim-projectionist', {'for': ['c', 'cpp']}
+Plug 'Yggdroot/indentLine' , {'for': ['c', 'cpp']}
+Plug 'jsfaint/gen_tags.vim' , {'for': ['c', 'cpp']}
+Plug 'majutsushi/tagbar', {'for': ['c', 'cpp']}
+Plug 'NLKNguyen/c-syntax.vim', {'for': ['c', 'cpp']}
 
-"==========colorscheme============
-Bundle 'bling/vim-airline'
-Bundle 'chriskempson/tomorrow-theme'
-Bundle 'drmikehenry/vim-fontsize'
-"==========colorscheme============
+Plug 'vim-scripts/VisIncr'
+Plug 'Yggdroot/LeaderF'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
-filetype plugin indent on    " required!
+Plug 'godlygeek/tabular'
+Plug 'osyo-manga/vim-over', {'on': 'OverCommandLine'}
+Plug 'dyng/ctrlsf.vim'
+Plug 'rking/ag.vim'
+Plug 'sjl/gundo.vim', {'on': 'UndotreeToggle'}
+
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'Konfekt/FastFold'
+
+" show
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'drmikehenry/vim-fontsize'
+Plug 'morhetz/gruvbox'
+
+call plug#end()
+" filetype Plug indent on    " required
 
 " {{{colorscheme
 syntax enable
-colorscheme Tomorrow-Night-Eighties
-"}}}
-"=========================== END Vundle ================================
+
+" set background=light
+" set background=dark
+colorscheme gruvbox
+" colorscheme Wombat
+" colorscheme monokai
+
 
 set nobackup               " cloese backup
 set display=lastline
 set iskeyword+=_,$,@,%,#,-
 set backspace=2            " backspace can be used
 set nu!                    " show line number
+set relativenumber         " relative line number
 set autoread               " Set to auto read when a file is changed from the outside
-set foldenable
 set fdm=syntax             " floader lines
 set cursorcolumn           " high light cursor column
 set cursorline             " high light cursor line
 set synmaxcol=300          " speedup long line
-set linespace=-2           " set line high space
+set linespace=-1           " set line high space
 set lines=25 columns=120   " init UI size
+set cc=100                 " colorcolumn 100
 set linebreak              " Do not cut words between lines, USELESS!
 set clipboard=unnamed      " yank and paste with the system clipboard
 set lazyredraw             " Don't redraw while executing macros
-
 set noerrorbells visualbell t_vb= " shut down error ringBell
+set vb t_vb=
+set novisualbell
 
+set term=xterm
+set autochdir
+autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
 set encoding=utf-8 " file encoding setting
+set langmenu=zh_CN.UTF-8
+language message zh_CN.UTF-8
 set fileencodings=utf-8,gbk,ucs-bom,cp936 "redad file orders 
 set fenc=utf-8 "create new file encoding 
+if g:iswindows 
+    source $VIMRUNTIME/delmenu.vim
+    source $VIMRUNTIME/menu.vim
+    language messages zh_CN.utf-8
+endif
 set nobomb
-
 set list
 set listchars=tab:\|-
 set tabpagemax=15 
-set showtabline=2
+set showtabline=0
 set paste
-nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 set noshowmode 
 
-set laststatus=2 
-" highlight StatusLineNC guifg=LightGrey guibg=LightSlateGrey 
-" set statusline=[%<%f\]\ %{fugitive#statusline()}\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [A=\%03.3b/H=0x\%02.2B]\ [POS=%l,%v][%p%%]\ %y%r%m%*%=\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+
+" status bar
+set laststatus=2
 
 " Ignore compiled files
 set wildignore=*.o,*.a,*~,*.pyc
 if g:iswindows 
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-	set wildignore+=*\\.git\\*,*\\.hg\\*,*\\.svn\\*  " Windows ('noshellslash')
+    set wildignore+=*\\.git\\*,*\\.hg\\*,*\\.svn\\*  " Windows ('noshellslash')
 else
     set wildignore+=.git\*,.hg\*,.svn\*,GRTAGS,GTAGS
-	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*        " Linux/MacOSX
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*        " Linux/MacOSX
 endif
 
 "Set mapleader
 let mapleader = ","
 let g:mapleader = ","
-set ignorecase smartcase "search cease smart
+set ignorecase smartcase nowrapscan "search smart cease, no wrap, incrase, highlight
 
 " VIM font setting
 if (g:isMac)
@@ -150,39 +163,24 @@ elseif (g:isLinux)
 else
     set guifont=yaheiInconsolata:h11
 endif
-set laststatus=2 
-set t_Co=256 
-" let g:Powerline_symbols='fancy' 
-let g:airline_theme="tomorrow"
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#syntastic#enabled = 0
-
-let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
-let g:airline_branch_prefix = '⭠'
-let g:airline_readonly_symbol = '⭤'
-let g:airline_linecolumn_prefix = '⭡'
 
 " C setting
 set sm        " bracket mactch
 set tabstop=4       " set width of tab
 set shiftwidth=4    " set with of assignment blank num = 4
+set softtabstop=4   " set 4 blanks as tab 
 set et              " set exchange tab to 4 blanks
 set cindent   " c style cindent
 set cinoptions={0,1s,t0,(0,
-nnoremap zz zt6k6j
-nnoremap [[ [[zt6k6j
-nnoremap ]] ]]zt6k6j
+nnoremap zz zt9k9j
 
-"window jump in VIM Ctrl + hjkl
+" window jump in VIM Ctrl + hjkl
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" "ctrl+c ctrl+v ctrl+x
+" ctrl+c ctrl+v ctrl+x
 set clipboard+=unnamed
 map <C-c> "+y
 smap <C-c> "+y
@@ -191,146 +189,126 @@ map <C-v> "+p
 
 " file code type
 set ffs=dos,unix
-nmap <leader>fd :se ff=dos<cr>
-nmap <leader>fu :se ff=unix<cr>
+nmap <leader>fd :se ff=dos<CR>
+nmap <leader>fu :se ff=unix<CR>
 
-" Persistent Undo
+" incsearch  {
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+set hlsearch
+let g:incsearch#auto_nohlsearch = 1
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+" }
+
+" Gundo  {
+nnoremap <Leader>u :GundoToggle<CR>
 set undofile
 set undodir=$VIMFILES/\_undodir
 set undolevels=100 "maximum number of changes that can be undone
-
-" matchIt plug
-let loaded_matchit = 1
-
-" easy motion
-let g:EasyMotion_do_shade = 0
-
-" ctrlsf.vim
-let g:ctrlsf_ackprg = 'ag'
-" let g:ctrlsf_auto_close = 0
-let g:ctrlsf_context = '-t -B 5 -A 3'
 " }
 
-" """"""""""""""""""" F1-F12"""""""""""""""""""""""""
-" F1 Toggle Menu and Toolbar {
-if g:isGUI
-    set guioptions-=m
-    set guioptions-=T
-    map <silent> <F1> :if &guioptions =~# 'T' <Bar>
-                \set guioptions-=T <Bar>
-                \set guioptions-=m <bar>
-                \else <Bar>
-                \set guioptions+=T <Bar>
-                \set guioptions+=m <Bar>
-                \endif<CR>
-endif
-"}
+" matchIt {
+let loaded_matchit = 1
+" }
 
-map <F2> :MarksBrowser<cr>
-nmap <F3> <ESC>:CtrlSF <c-r><c-w><CR>
-nmap <C-F3> <ESC>:CtrlSFOpen<CR>
+" easy motion {
+let g:EasyMotion_do_shade = 0
+" }
 
-"F4 file infor
-let g:vimrc_author='loseblue' 
-let g:vimrc_email='loseblue[a]163.com' 
-let g:vimrc_homepage='http://loseblue.farbox.com/' 
-nmap <F4> :AuthorInfoDetect<cr>
+" ctrlsf.vim {
+let g:ctrlsf_auto_close = 0
+let g:ctrlsf_ackprg = 'ag'
+let g:ctrlsf_case_sensitive = 'smart'
+let g:ctrlsf_indent = 2
+let g:ctrlsf_context = '-B 5 -A 3'
+let g:ctrlsf_default_root = 'project'
+let g:ctrlsf_winsize = '30%'
+let g:ctrlsf_position = 'right'
+let g:ctrlsf_mapping = {
+            \ "next": "n",
+            \ "prev": "N",
+            \ }
+let g:ctrlsf_ignore_dir = ["node_modules"]	
+" }
 
-map <F5> :%s/\r//g<cr>:w<cr>gg
-imap <F7> <C-R>=strftime("%c")<CR>
-
-nmap <silent> <F9> :TagbarToggle<CR>
+" tagbar {
 let g:tagbar_left = 1
 let g:tagbar_singleclick = 0
+let g:tagbar_width = 30
+let g:tagbar_sort = 0
+
 if (g:isMac)
     let g:tagbar_ctags_bin = '/usr/local/Cellar/ctags/5.8/bin/ctags'
 else
     let g:tagbar_ctags_bin = 'ctags'
 endif
 
-let g:tagbar_width = 30
-let g:tagbar_sort = 0
+let g:tagbar_type_asciidoc = {
+            \ 'ctagstype' : 'asciidoc',
+            \ 'kinds' : [
+            \ 'h:table of contents',
+            \ 'a:anchors:1',
+            \ 't:titles:1',
+            \ 'n:includes:1',
+            \ 'i:images:1',
+            \ 'I:inline images:1'
+            \ ],
+            \ 'sort' : 0
+            \ }
+" }
 
-" roll 90% screen in screen Alt + jk {
+" accelerated-smooth-scroll{
+let g:ac_smooth_scroll_no_default_key_mappings=1
+let g:ac_smooth_scroll_min_limit_msec = 20
+let g:ac_smooth_scroll_fb_sleep_time_msec=1
+lte g:ac_smooth_scroll_max_limit_msec=100
+
 if (g:isGUI)
     if (g:isMac)
-        noremap <silent> <D-k> :call smooth_scroll#up(&scroll*17/10, 0, 2, 0)<CR>
-        noremap <silent> <D-j> :call smooth_scroll#down(&scroll*17/10, 0, 2, 0)<CR>
+        nmap <silent> <D-k> <Plug>(ac-smooth-scroll-c-b)
+        nmap <silent> <D-j> <Plug>(ac-smooth-scroll-c-f)
     else
-        noremap <silent> <A-k> :call smooth_scroll#up(&scroll*17/10, 0, 2, 0)<CR>
-        noremap <silent> <A-j> :call smooth_scroll#down(&scroll*17/10, 0, 2, 0)<CR>
+        nmap <silent> <A-k> <Plug>(ac-smooth-scroll-c-b)
+        nmap <silent> <A-j> <Plug>(ac-smooth-scroll-c-f)
     endif
 else
-    noremap <silent> k :call smooth_scroll#up(&scroll*17/10, 0, 2, 0)<CR>
-    noremap <silent> j :call smooth_scroll#down(&scroll*17/10, 0, 2, 0)<CR>
+    nmap <silent> k <Plug>(ac-smooth-scroll-c-b)
+    nmap <silent> j <Plug>(ac-smooth-scroll-c-f)
 endif
-"}
+
+noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
+noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
+" }
+
 
 " NERD_comments
 let NERDSpaceDelims = 1 
 au BufEnter,BufRead,BufNewFile *.txt setlocal ft=txt "txtBrowser called
 au BufEnter,BufRead,BufNewFile *.trc setlocal ft=trc "trcBrowser called
 
-" a.vim {
-let g:alternateNoDefaultAlternate = 1
-"}
-
 " vim-multiple-cursors {
 let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_next_key='<C-]>'
-let g:multi_cursor_prev_key='<C-[>'
-let g:multi_cursor_skip_key='<C-\>'
+let g:multi_cursor_next_key='<A-]>'
+let g:multi_cursor_prev_key='<A-[>'
+let g:multi_cursor_skip_key='<A-\>'
 let g:multi_cursor_quit_key='<Esc>'
 "}
 
-"tabbar & tab swith{
-let g:Tb_UseSingleClick = 1
-let g:Tb_ModSelTarget = 1
-if (g:isGUI)
-    if (g:isMac)
-        map <D-Left> :Tbbn<CR>
-        map <D-Right> :Tbbp<CR>
-        map <D--> :Tbbd<CR>
-    else
-        map <A-Left> :Tbbn<CR>
-        map <A-Right> :Tbbp<CR>
-        map <A--> :Tbbd<CR>
-    endif
-else
-    map   :Tbbn<CR>
-    map   :Tbbp<CR>
-    map - :Tbbd<CR>
-endif
-map <S-Left> :tabp<CR>
-map <S-Right> :tabn<CR>
-""}
-
-
-" ctrlp{
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
-let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-            \ 'file': '\v\.(exe|so|dll|o|a|sbr|obj)$',
-            \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-            \ }
-
-let g:ctrlp_reuse_window = 'netrw\|help\|quickfix\|tagbar\|taglist'
-let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path_mode = 'acr'
-let g:ctrlp_max_height=9
-let g:ctrlp_match_window_reversed=0
-let g:ctrlp_follow_symlinks=1
-let g:ctrlp_lazy_update = 1
-let g:ctrlp_switch_buffer = 'Et'
-let g:ctrlp_show_hidden = 1
-" }
-
+" vim-bookmarks {
+highlight BookmarkSign ctermbg=NONE ctermfg=160
+highlight BookmarkLine ctermbg=194 ctermfg=NONE
+let g:bookmark_sign = '>>'
+let g:bookmark_highlight_lines = 1
+let g:bookmark_auto_close = 1
+let g:bookmark_show_warning = 0
+let g:bookmark_center = 1
+"}
 
 " Ctrl+S {
-imap <C-s> <Esc>:wa!<cr>i<Right>
-nmap <C-s> :wa!<cr>
+imap <C-s> <Esc>:wa!<CR>i<Right>
+nmap <C-s> :wa!<CR>
 set nocompatible
 source $VIMRUNTIME/mswin.vim
 behave mswin
@@ -341,169 +319,138 @@ let NERDTreeWinPos="right"
 let NERDTreeShowBookmarks=1
 " }
 
-" easyGrep{
+" vim-repeat {
+silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
+" }
+
+" easyGrep {
 let EasyGrepMode = 2     "extension mode
 let EasyGrepCommand = 1  "grep
 " }
 
-" markdown highlight {
-let g:vim_markdown_folding_disabled=1
-let g:vim_markdown_initial_foldlevel=1
+" gruvbox {
+let g:gruvbox_italic=0
+let g:gruvbox_italicize_comments=0
 " }
 
-" neocomplete {
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+" leaderF {
+let g:Lf_WildIgnore = {
+            \ 'dir': ['.svn','.git'],
+            \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.[oad]','*.so','*.py[co]']
+            \}
+let g:Lf_DefaultMode=0
+" }
 
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-
-" For cursor moving in insert mode(Not recommended)
-"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
-"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
-"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
-" Or set this.
-"let g:neocomplete#enable_cursor_hold_i = 1
-" Or set this.
-"let g:neocomplete#enable_insert_char_pre = 1
-
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+" plantuml {
+let g:plantuml_executable_script='java -jar c:\vim_tools\plantuml.jar -charset UTF-8'
 "}
 
-" Neosnippet {
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
-
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-
-" Enable snipMate compatibility feature.
-let g:neosnippet#enable_snipmate_compatibility = 1
-
-" Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+" FastFold {
+let g:tex_fold_enabled=1
+let g:vimsyn_folding='af'
+let g:xml_syntax_folding = 1
+let g:php_folding = 1
+let g:perl_fold = 1
 " }
 
-" settings of cscope.
-" I use GNU global instead cscope because global is faster.
-set cscopetag
-set cscopeprg=gtags-cscope
-set cscopequickfix=c-,d-,e-,f-,g0,i-,s-,t-
-let GtagsCscope_Auto_Load = 1
-let GtagsCscope_Auto_Map = 1
-let GtagsCscope_Absolute_Path = 0
-let GtagsCscope_Keep_Alive = 0
-nmap <silent> <leader>gd <ESC>:cstag <c-r><c-w><CR>
-nmap <silent> <leader>gc <ESC>:lcs f c <c-r><c-w><cr>:lw<cr>
-nmap <silent> <leader>gs <ESC>:lcs f s <c-r><c-w><cr>:lw<cr>
+" Ag {
+let g:ag_prg="ag -S -U
+let g:ag_format="%f:%l:%m"
+" }
 
-au BufWritePost *.[ch] call UpdateGtags()
+" airline设置 {
+let g:airline_theme='wombat'
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ‘ ‘
+let g:airline#extensions#tabline#left_alt_sep = ‘|’
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
-function! UpdateGtags()
-    call xolox#misc#os#exec({'command': 'global -u', 'async': 1})
-endfunction
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 
-set diffexpr=MyDiff()
-function MyDiff()
-    let opt = '-a --binary '
-    if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-    if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-    let arg1 = v:fname_in
-    if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-    let arg2 = v:fname_new
-    if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-    let arg3 = v:fname_out
-    if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-    let eq = ''
-    if $VIMRUNTIME =~ ' '
-        if &sh =~ '\<cmd'
-            let cmd = '""' . $VIMRUNTIME . '\diff"'
-            let eq = '"'
-        else
-            let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-        endif
-    else
-        let cmd = $VIMRUNTIME . '\diff'
-    endif
-    silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-endfunction
+nnoremap <C-tab> :bn<CR>
+nnoremap <C-s-tab> :bp<CR>
 
+map <leader>1 :b 1<CR>
+map <leader>2 :b 2<CR>
+map <leader>3 :b 3<CR>
+map <leader>4 :b 4<CR>
+map <leader>5 :b 5<CR>
+map <leader>6 :b 6<CR>
+map <leader>7 :b 7<CR>
+map <leader>8 :b 8<CR>
+map <leader>9 :b 9<CR>
+map <leader>- :bd<CR>
+" }
 
+" gen_tags {
+let g:gen_tags#use_cache_dir = 0
+let g:gen_tags#verbose = 1
+" }
+
+func Replace_Chn()  " for writing latex
+    let chinese={ "（" : "(" , "）" : ")" , "，" : ", ", "。" : ". ", "；" : "; ", "：" : ": ", "？" : "? ", "！" : "! ", "、" : ", ", "“" : "\"", "’" : "'" ,"”" : "\"", "℃" : "\\\\textcelsius", "μ" : "$\\\\mu$"}
+    for i in keys(chinese)
+        silent! exec '%substitute/' . i . '/'. chinese[i] . '/g'
+    endfor
+endfunc
+nmap <silent> <leader>lc <ESC>:call Replace_Chn()<CR>
+
+nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+
+" """"""""""""""""""" F1-F12"""""""""""""""""""""""""
+" F1 Toggle Menu and Toolbar {
+if g:isGUI
+    set guioptions-=m
+    set guioptions-=T
+    set guioptions-=L 
+    set guioptions-=r
+    set guioptions-=b
+    map <silent> <F1> :if &guioptions =~# 'T' <Bar>
+                \set guioptions-=T <Bar>
+                \set guioptions-=m <bar>
+                \set guioptions-=L <bar>
+                \set guioptions-=r <bar>
+                \set guioptions-=b <bar>
+                \else <Bar>
+                \set guioptions+=T <Bar>
+                \set guioptions+=m <Bar>
+                \set guioptions+=L <bar>
+                \set guioptions+=r <bar>
+                \set guioptions+=b <bar>
+                \endif<CR>
+endif
+"}
+
+"F2 file infor
+let g:vimrc_author='loseblue' 
+let g:vimrc_email='loseblue[a]163.com' 
+let g:vimrc_homepage='http://loseblue.farbox.com/' 
+nmap <F2> :AuthorInfoDetect<CR>
+
+nmap <F3> <ESC>:CtrlSF <c-r><c-w>
+nmap <C-F3> <ESC>:CtrlSF 
+nmap <S-F3> <ESC>:CtrlSFToggle<CR> 
+
+nmap <F4> <ESC>:Ag ""<left>
+
+" C-F5 plantuml make F5 dot
+nnoremap <F5> :w<CR> :silent make<CR>
+inoremap <F5> <Esc>:w<CR>:silent make<CR>
+vnoremap <F5> :<C-U>:w<CR>:silent make<CR>
+
+map <F6> <Esc>:BinEdit<CR>
+imap <F7> <C-R>=strftime("%c")<CR>
+
+nmap <F9> :TagbarToggle<CR>
+noremap <C-F9> :LeaderfFunction!<CR>

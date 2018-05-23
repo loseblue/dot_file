@@ -5,7 +5,12 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\*\shell\gvimbuffer\command]
 @="d:\\MySoftWare\\gVimPortable\\gVimPortable.exe -p --remote-silent \"%1\" \"%*\""
 
-[HKEY_CLASSES_ROOT\*\shell\gvimdiff]
-@="Diff with gvim"
-[HKEY_CLASSES_ROOT\*\shell\gvimdiff\command]
-@="d:\\MySoftWare\\gVimPortable\\gVimPortable.exe -d \"%1\" \"%2\""
+; [HKEY_CLASSES_ROOT\*\shell\gvimtab]
+; @="Open with gvim tab"
+; [HKEY_CLASSES_ROOT\*\shell\gvimtab\command]
+; @="d:\\MySoftWare\\gVimPortable\\gVimPortable.exe \"%1\" \"%*\""
+
+; [HKEY_CLASSES_ROOT\*\shell\gvimdiff]
+; @="Diff with gvim"
+; [HKEY_CLASSES_ROOT\*\shell\gvimdiff\command]
+; @="d:\\MySoftWare\\gVimPortable\\gVimPortable.exe -d \"%1\" \"%2\""
